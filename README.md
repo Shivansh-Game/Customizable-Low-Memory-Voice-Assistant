@@ -8,7 +8,7 @@ A Python-based, fully offline desktop voice assistant built for Windows. It list
 * **Transparent GUI Overlay**: Features a custom `tkinter` overlay that automatically positions itself at the bottom right of the usable screen area. The HUD is borderless, click-through, and features fading text animations.
 * **Window Management**: Uses raw Windows API (`ctypes`) calls to reliably open, close, and force specific applications (like Discord, VS Code, Opera, and Spotify) into the foreground.
 * **Media & System Controls**: Supports hotkeys for media playback, window minimization, opening the calculator, and flushing the system DNS cache.
-* **TTS Research Reader**: Integrates with external Python scripts.
+* **External Script Integration**: Integrates with external Python scripts.
 
 ## Project Structure
 

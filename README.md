@@ -19,6 +19,9 @@ A Python-based, fully offline desktop voice assistant built for Windows. It list
 * **`registry.py`**: A lightweight module providing the `COMMAND_REGISTRY` dictionary and the `@command` decorator used to map spoken phrases to functions.
 
 ## Architecture
+
+I used specialized components rather than general-purpose LLMs to keep it accurate while keeping a small memory footprint. Silero handles voice activity detection, Vosk handles constrained speech recognition, deterministic commands are executed directly, and heavier tasks can be delegated to external Python processes.
+
 ```
 Microphone
     ↓

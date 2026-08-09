@@ -86,5 +86,3 @@ def launch_notepad():
 ```
 
 Multiple phrases can be stacked on a single function to account for variations in speech recognition.
-
-```

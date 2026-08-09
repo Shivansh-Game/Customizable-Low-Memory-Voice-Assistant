@@ -89,7 +89,7 @@ Multiple phrases can be stacked on a single function to account for variations i
 
 ## Adding Commands with TTS and External Function Calling
 
-# Here is a simple example of how you'd implement TTS, it'll read a string to you.
+- Here is a simple example of how you'd implement TTS, it'll read a string to you.
 
 
 ```python
@@ -136,4 +136,4 @@ def read_top_paper():
     threading.Thread(target=tts_worker, daemon=True).start()   
 ```
 
-# Here is an example on how to call an external file
+- Here is an example on how to call an external file

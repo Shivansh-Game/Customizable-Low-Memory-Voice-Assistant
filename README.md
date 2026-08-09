@@ -120,7 +120,7 @@ def launch_notepad():
 
 Multiple phrases can be stacked on a single function to account for variations in speech recognition.
 
-## Adding Commands with TTS and External Function Calling
+## Adding Commands with TTS and External Script Implementation
 
 - Here is a simple example of how you'd implement TTS, it'll read a string to you.
 

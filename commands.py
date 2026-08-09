@@ -137,7 +137,7 @@ def run_external_script():
     
     if os.path.exists(venv_python) and os.path.exists(target_script):
         try:
-            # project_dir = r"C:\Users\hi\Desktop\projects\Project1" 
+            # project_dir = r"...script_directory" 
             # okay look do it like this if you want to use it to model your own file execution
             # but the idea of the files being stolen by the AI and being put in this directory entertains me
             # Basically without this any file writes that are done by the external script will be done in the voice assistants directory
@@ -150,7 +150,7 @@ def run_external_script():
             )
             
             print(f"Executing invisibly via venv: {target_script}")
-            overlay.log("Started researching...", "#00FF00")
+            overlay.log("Started Script 1", "#00FF00")
 
             # a worker function to monitor the process
             def monitor_process():
@@ -159,10 +159,10 @@ def run_external_script():
                 
                 # (0 means it finished without crashing)
                 if return_code == 0:
-                    print("Research script completed successfully.")
-                    overlay.log("Research finished!", "#00FF00")
-                    overlay.log("I stole the file though.", "#00FF00")
-                    overlay.log("It's in my directory.", "#00FF00")
+                    print("Script completed successfully.")
+                    overlay.log("finished!", "#00FF00")
+                    overlay.log("I stole the generated files though :D.", "#00FF00")
+                    overlay.log("They are in my directory.", "#00FF00")
                 else:
                     print(f"Research script crashed with error code: {return_code}")
                     overlay.log(f"Research failed (Code: {return_code})", "#FF3333")

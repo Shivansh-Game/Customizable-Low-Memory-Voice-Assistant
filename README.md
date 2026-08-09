@@ -18,11 +18,41 @@ A Python-based, fully offline desktop voice assistant built for Windows. It list
 * **`helper.py`**: Houses the `focus_process` function, which iterates through visible Windows OS windows to match and restore a specific executable (e.g., `spotify.exe`), as well as RGB/Hex conversion utilities.
 * **`registry.py`**: A lightweight module providing the `COMMAND_REGISTRY` dictionary and the `@command` decorator used to map spoken phrases to functions.
 
-## Requirements
+## Architecture
+```
+Microphone
+    ↓
+Silero VAD
+    ↓
+Pre-buffer
+    ↓
+Vosk + constrained grammar
+    ↓
+Command Registry
+    ↓
+Command Function
+    ├── Windows / media control
+    ├── TTS
+    └── External Python process
+    ↓
+HUD feedback
+```
+
+## Requirements and Memory Usage
 
 ### System
 * **OS:** Windows (Relies heavily on `ctypes.windll` for window management and GUI transparency).
 * **Audio:** A working microphone input.
+
+* ### Resource Usage
+
+It is designed to remain running continuously without becoming a significant system resource drain.
+
+| State | RAM |
+|---|---:|
+| Idle | ~300 MB |
+| Peak While Running External Scripts | ~300 MB + Memory Footprint of External Script |
+
 
 ### Dependencies
 Ensure you have the following Python packages installed:

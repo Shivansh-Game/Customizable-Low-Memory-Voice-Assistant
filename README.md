@@ -86,3 +86,54 @@ def launch_notepad():
 ```
 
 Multiple phrases can be stacked on a single function to account for variations in speech recognition.
+
+## Adding Commands with TTS and External Function Calling
+
+# Here is a simple example of how you'd implement TTS, it'll read a string to you.
+
+
+```python
+# This is an example of how a chunk in the top_papers.txt file is stored
+'''
+--------------------------------------------------
+
+Title: title
+Link: http://arxiv.org/hahaha_something
+Summary:
+summary
+
+--------------------------------------------------
+'''
+
+@command("say hello")
+def read_top_paper():
+
+    def tts_worker():
+        text_to_say = f"Hello"
+        
+        try:
+            # Initialize COM for the background thread
+            pythoncom.CoInitialize()
+            
+            # Initialize locally within the thread
+            engine = pyttsx3.init()
+            
+            # Adjust the speech rate (default is usually 200 wpm)
+            engine.setProperty('rate', 150) 
+            
+            # Queue and play
+            engine.say(text_to_say)
+            engine.runAndWait()
+            
+            # Clean up
+            pythoncom.CoUninitialize()
+            
+        except Exception as e:
+            print(f"TTS Failed: {e}")
+            overlay.log("TTS playback failed", "#FF3333")
+
+    # the TTS in a daemon thread so you can keep using the voice assistant while the TTS speaks
+    threading.Thread(target=tts_worker, daemon=True).start()   
+```
+
+# Here is an example on how to call an external file

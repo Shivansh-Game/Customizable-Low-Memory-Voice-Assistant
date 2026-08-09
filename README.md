@@ -137,3 +137,51 @@ def read_top_paper():
 ```
 
 - Here is an example on how to call an external file
+
+```python
+@command("run script 1")
+def run_external_script():
+    venv_python = r"...script_directory\.venv\Scripts\python.exe" # The path to the python.exe in your external scripts .venv
+    target_script = r"...script_directory\main.py" # the external script
+    
+    if os.path.exists(venv_python) and os.path.exists(target_script):
+        try:
+            # project_dir = r"...script_directory" 
+            # without this any file writes that are done by the external script will be done in the voice assistants directory
+            # instead of the external scripts directory
+            # but the idea of the files being stolen by the assistant and being put in this directory entertains me
+            
+            process = subprocess.Popen(
+                [venv_python, target_script],
+                # cwd=project_dir, -- Uncomment to not get files stolen from the external directory
+                creationflags=0x08000000 # no terminal pop up
+            )
+            
+            print(f"Executing invisibly via venv: {target_script}")
+            overlay.log("Started Script 1", "#00FF00")
+
+            # a worker function to monitor the process, optional but very nice to have so you know when the script is done executing
+            def monitor_process():
+                # blocks this specific thread until the external script finishes
+                return_code = process.wait()
+                
+                # (0 means it finished without crashing)
+                if return_code == 0:
+                    print("Script completed successfully.")
+                    overlay.log("finished!", "#00FF00")
+                    overlay.log("I stole the generated files though :D.", "#00FF00")
+                    overlay.log("They are in my directory.", "#00FF00")
+                else:
+                    print(f"Research script crashed with error code: {return_code}")
+                    overlay.log(f"Research failed (Code: {return_code})", "#FF3333")
+
+            # the monitor function in a background thread
+            threading.Thread(target=monitor_process, daemon=True).start()
+
+        except Exception as e:
+            print(f"Failed to run script: {e}")
+            overlay.log("Failed to launch script", "#FF3333")
+    else:
+        print("Error: Either the venv Python or the target script was not found.")
+        overlay.log("Path error for script", "#FF3333")
+```

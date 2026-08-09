@@ -8,37 +8,24 @@ import re
 import pyttsx3
 import pythoncom
 
+# Some basic commands
+
+# Important don't touch this 
 overlay = None
 
 def set_overlay(hud):
     global overlay
     overlay = hud
+# Important don't touch this 
 
-@command("open opera")
-def open_browser():
-    user_home = os.path.expanduser("~")
-    gx_path = os.path.join(user_home, r"AppData\Local\Programs\Opera GX\opera.exe")
-    if os.path.exists(gx_path):
-        subprocess.Popen(gx_path)
-    else:
-        print(f"Path not found: {gx_path}")
+@command("open steam")
+def open_library():
+    # 'start' is a cmd built-in, so we call cmd explicitly
+    subprocess.run(["cmd", "/c", "start", "steam://open/library"])
 
-@command("close opera")
-def close_browser():
-    subprocess.run(["taskkill", "/F", "/IM", "opera.exe"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-#@command("open steam")
-#def open_library():
-#    # 'start' is a cmd built-in, so we call cmd explicitly
-#    subprocess.run(["cmd", "/c", "start", "steam://open/library"])
-#
-#@command("close steam")
-#def close_library():
-#    subprocess.run(["taskkill", "/F", "/IM", "steam.exe"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-#
-#@command("open peak")
-#def open_peak():
-#    subprocess.run(["cmd", "/c", "start", "steam://run/3527290"])
+@command("close steam")
+def close_library():
+    subprocess.run(["taskkill", "/F", "/IM", "steam.exe"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 @command("open code")
 def open_code():
@@ -75,17 +62,6 @@ def open_spot():
 @command("close music")
 def close_spot():
     subprocess.run(["taskkill", "/F", "/IM", "spotify.exe"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-#@command("close everything")
-#def close_all():
-#    print("Closing all heavy applications...")
-#    apps_to_kill = [
-#        "opera.exe", "chrome.exe", "msedge.exe", 
-#        "steam.exe", "spotify.exe",  
-#        "Discord.exe", "RiotClientServices.exe"  
-#    ]
-#    for app in apps_to_kill:
-#        subprocess.run(["taskkill", "/F", "/IM", app], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 @command("mini all")
 def minimize_windows():
@@ -149,32 +125,28 @@ def switch_discord():
 def switch_code():
     focus_process("code.exe")
 
-@command("focus opera")
-def switch_opera():
-    focus_process("opera.exe")
-
 @command("focus music")
 def switch_spotify():
     focus_process("spotify.exe")
-    
-@command("[unk] find top research papers")
-@command("find top research papers")
-@command("[unk] find research papers")
-@command("find research papers")
+
+
+@command("run script 1")
 def run_external_script():
-    venv_python = r"C:\Users\hi\Desktop\projects\Project1\.venv\Scripts\python.exe"
-    target_script = r"C:\Users\hi\Desktop\projects\Project1\main.py"
+    venv_python = r"...script_directory\.venv\Scripts\python.exe"
+    target_script = r"...script_directory\main.py"
     
     if os.path.exists(venv_python) and os.path.exists(target_script):
         try:
             # project_dir = r"C:\Users\hi\Desktop\projects\Project1" 
             # okay look do it like this if you want to use it to model your own file execution
             # but the idea of the files being stolen by the AI and being put in this directory entertains me
+            # Basically without this any file writes that are done by the external script will be done in the voice assistants directory
+            # instead of the external scripts directory
             
             process = subprocess.Popen(
                 [venv_python, target_script],
-                # cwd=project_dir,
-                creationflags=0x08000000
+                # cwd=project_dir, -- Uncomment to not get files stolen from the external directory
+                creationflags=0x08000000 # no terminal pop up
             )
             
             print(f"Executing invisibly via venv: {target_script}")
@@ -205,12 +177,24 @@ def run_external_script():
         print("Error: Either the venv Python or the target script was not found.")
         overlay.log("Path error for script", "#FF3333")
         
-        
+# a simple example of how you'd implement TTS, it'll read a chunk of a "top_papers.txt" file to you and then remove that chunk from the file
+# and store it in a "read_papers.txt" file
+# This is an example of how a chunk in the top_papers.txt file is stored
+'''
+--------------------------------------------------
+
+Title: title
+Link: http://arxiv.org/hahaha_something
+Summary:
+summary
+
+--------------------------------------------------
+'''
+
 @command("read me a paper")
-@command("[unk] read me a paper")
 def read_top_paper():
-    top_papers_file = r"C:\Users\hi\Desktop\jarvis\top_papers.txt"
-    read_papers_file = r"C:\Users\hi\Desktop\jarvis\read_papers.txt"
+    top_papers_file = r"...Project_Directory\top_papers.txt"
+    read_papers_file = r"...Project_Directory\read_papers.txt"
 
     def tts_worker():
         overlay.log("Starting paper read...", "#00FF00")

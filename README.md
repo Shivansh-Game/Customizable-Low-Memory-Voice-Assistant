@@ -170,6 +170,7 @@ def read_top_paper():
 ```
 
 - Here is an example on how to call an external file
+- The external script can be any standalone Python program with its own dependencies and virtual environment. The voice assistant does not need to know or manage its internal implementation; it simply launches the script as a separate process.
 
 ```python
 @command("run script 1")
